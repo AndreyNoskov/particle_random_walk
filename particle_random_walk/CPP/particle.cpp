@@ -7,9 +7,10 @@
 Particle::Particle(Field* _field)
 {
 	field = _field;
-	srand(time(0));
+	srand((unsigned int)time(0));
 	xPos = 1 + (rand() % (field->get_width() - 2));
 	yPos = 1;
+	trace.push_back(cv::Point2i(xPos, yPos));
 	isFinished = false;
 }
 
@@ -24,24 +25,26 @@ cv::Point2i Particle::move()
 	float cur = field->get_potential(xPos, yPos);
 	for (int j = -1; j < 2; ++j)
 		for (int i = -1; i < 2; ++i)
-		{
 			if (((i == 0) && (j == 0)) || (field->get_available(xPos + i, yPos + j) != 0))
 				potentials[(j + 1) * 3 + (i + 1)] = 0;
 			else
 				potentials[(j + 1) * 3 + (i + 1)] = field->get_potential(xPos + i, yPos + j);
-		}
 	float sum = 0;
 	for (int i = 0; i < 9; ++i)
-		sum += potentials[i];
+		if (potentials[i] != 0)
+			sum += abs(potentials[i]-cur);
 	for (int i = 0; i < 9; ++i)
-		potentials[i] = abs(potentials[i] - cur) / sum;
-	for (int i = 0; i < 9; ++i)
-		std::cout << potentials[i] << ' ';
-	std::cout << '\n';
+		if (potentials[i] != 0)
+			potentials[i] = abs(potentials[i] - cur) / sum;
+	//for (int i = 0; i < 9; ++i)
+	//	std::cout << potentials[i] << ' ';
+	//std::cout << '\n';
 	int destination = num_from_distribution(potentials, 9);
 	xPos += (destination % 3) - 1;
 	yPos += (int)(destination / 3) - 1;
+	cv::Point2i point = cv::Point2i(xPos, yPos);
+	trace.push_back(point);
 	if (yPos == field->get_width() - 2)
 		isFinished = true;
-	return cv::Point2i(xPos, yPos);
+	return point;
 }

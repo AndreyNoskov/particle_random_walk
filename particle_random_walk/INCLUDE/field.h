@@ -11,6 +11,8 @@ private:
 
 	Field(); // hide default constructor
 
+	// create potential field with point source
+	void create_point_source_field();
 public:
 	// constructor & destructor
 	Field(int _width, int _height);

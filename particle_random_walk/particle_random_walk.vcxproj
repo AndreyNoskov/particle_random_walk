@@ -20,12 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPP\field.cpp" />
+    <ClCompile Include="CPP\graph_engine.cpp" />
     <ClCompile Include="CPP\main.cpp" />
     <ClCompile Include="CPP\misc.cpp" />
     <ClCompile Include="CPP\particle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INCLUDE\field.h" />
+    <ClInclude Include="INCLUDE\graph_engine.h" />
     <ClInclude Include="INCLUDE\misc.h" />
     <ClInclude Include="INCLUDE\particle.h" />
   </ItemGroup>
