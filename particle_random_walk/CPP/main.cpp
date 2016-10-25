@@ -3,8 +3,8 @@
 #include <misc.h>
 #include <graph_engine.h>
 
-const int HEIGHT = 25;
-const int WIDTH = 25;
+const int HEIGHT = 55;
+const int WIDTH = 55;
 
 int main()
 {

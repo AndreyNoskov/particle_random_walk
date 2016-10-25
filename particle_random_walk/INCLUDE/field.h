@@ -1,10 +1,14 @@
 #pragma once
 
+#include <cluster.h>
+
 class Field
 {
 private:
 	int width;
 	int height;
+
+	float** basic_potentials;
 
 	float** potentials;
 	int** availables;
@@ -25,4 +29,6 @@ public:
 	inline int   get_height() { return height; }
 	void print_potentials();
 	void print_availables();
+
+	void update_field(Cluster* cluster);
 };

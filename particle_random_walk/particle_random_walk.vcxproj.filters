@@ -44,5 +44,8 @@
     <ClInclude Include="INCLUDE\graph_engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="INCLUDE\cluster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
