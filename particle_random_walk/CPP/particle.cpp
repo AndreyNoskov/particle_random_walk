@@ -4,8 +4,9 @@
 #include <iostream>
 #include <ctime>
 
-Particle::Particle(Field* _field, Cluster* _cluster)
+Particle::Particle(Field* _field, Cluster* _cluster, int _cluster_elements = 1)
 {
+	cluster_elements = _cluster_elements;
 	field = _field;
 	cluster = _cluster;
 	srand((unsigned int)time(0));
@@ -42,6 +43,13 @@ cv::Point2i Particle::move()
 	yPos += (int)(destination / 3) - 1;
 	cv::Point2i point = cv::Point2i(xPos, yPos);
 	trace.push_back(point);
+	int near_cluster = 0;
+	for (int j = -1; j < 2; ++j)
+		for (int i = -1; i < 2; ++i)
+			if (field->get_available(xPos, yPos) == CELL_CLUSTER)
+				near_cluster++;
+	if (near_cluster > cluster_elements)
+		cluster->add_element(xPos, yPos);
 	if (yPos == field->get_width() - 2)
 		isFinished = true;
 	return point;

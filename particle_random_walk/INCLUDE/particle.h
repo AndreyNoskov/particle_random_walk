@@ -17,10 +17,11 @@ private:
 	Cluster* cluster;
 	bool isFinished;
 	std::vector<cv::Point2i> trace;
+	int cluster_elements;
 
 public:
 	// Constructor & destructor
-	Particle(Field* _field, Cluster* _cluster);
+	Particle(Field* _field, Cluster* _cluster, int cluster_elements);
 	~Particle();
 
 	// getters 

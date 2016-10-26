@@ -4,6 +4,7 @@
 
 Cluster::Cluster(Field* _field, float _sigma, float _beta, float _radius)
 {
+	field = _field;
 	sigma = _sigma;
 	beta = _beta;
 	radius = _radius;
@@ -51,7 +52,7 @@ void Cluster::add_element(int x, int y)
 	for (int j = -1; j < 2; ++j)
 		for (int i = -1; i < 2; ++i)
 			if ( !( abs(i) == abs(j) ) )
-				if (field->get_available[x+i][y+j] != CELL_BORDER)
+				if (field->get_available(x+i, y+j) != CELL_BORDER)
 					cluster_elements[y+j][x+i] = (is_perimeter(field, x+i, y-1)) ? CLUSTER_PERIMETER : CLUSTER_INTERN;
 	cluster_elements = new int*[height];
 	for (int j = 0; j < height; ++j)

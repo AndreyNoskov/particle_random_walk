@@ -16,7 +16,7 @@ int main()
 	for (int i = 0; i < 100; i++)
 	{
 		cv::Point2i point(0, 0);
-		Particle particle(&field, &cluster);
+		Particle particle(&field, &cluster, 2);
 		while (!particle.is_finished())
 		{
 			point = particle.move();

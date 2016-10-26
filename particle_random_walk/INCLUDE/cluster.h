@@ -1,6 +1,7 @@
 #pragma once
 
 #include <field.h>
+class Field;
 
 enum Cluster_elements{ CLUSTER_EMPTY, CLUSTER_INTERN, CLUSTER_PERIMETER };
 

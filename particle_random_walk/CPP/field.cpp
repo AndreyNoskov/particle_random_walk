@@ -77,11 +77,11 @@ void Field::create_point_source_field()
 
 void Field::update_field(Cluster* cluster)
 {
-	float max = potentials[0][0] = basic_potentials[0][0] + cluster->get_potential[0][0];
+	float max = potentials[0][0] = basic_potentials[0][0] + cluster->get_potential(0, 0);
 	for (int i = 0; i < width; ++i)
 		for (int j = 0; j < height; ++j)
 		{
-			potentials[j][i] = basic_potentials[j][i] + cluster->get_potential[i][j];
+			potentials[j][i] = basic_potentials[j][i] + cluster->get_potential(i, j);
 			if (potentials[j][i] < max)
 				max = potentials[j][i];
 		}

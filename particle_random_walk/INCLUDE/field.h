@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cluster.h>
+class Cluster;
 
 class Field
 {
