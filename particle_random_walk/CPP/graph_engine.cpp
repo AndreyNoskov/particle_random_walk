@@ -57,5 +57,9 @@ void GraphEngine::process(Field* field, Particle* particle)
 		cv::imshow(winName, image);
 		cv::waitKey(20);
 	}
-		
+}
+
+void GraphEngine::process_stage(Field* field, Cluster* cluster)
+{
+
 }

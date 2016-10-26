@@ -4,6 +4,7 @@
 #include <particle.h>
 #include <field.h>
 #include <string>
+#include <cluster.h>
 
 class GraphEngine
 {
@@ -21,4 +22,5 @@ public:
 	~GraphEngine();
 
 	void process(Field* field, Particle* particle);
+	void process_stage(Field* field, Cluster* cluster);
 };

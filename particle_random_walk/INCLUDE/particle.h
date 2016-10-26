@@ -3,7 +3,10 @@
 #include <vector>
 #include <opencv2\opencv.hpp>
 
-#include <Field.h>
+#include <field.h>
+#include <cluster.h>
+
+enum Cells { CELL_EMPTY, CELL_BORDER, CELL_CLUSTER };
 
 class Particle
 {
@@ -11,12 +14,13 @@ private:
 	int xPos;
 	int yPos;
 	Field* field;
+	Cluster* cluster;
 	bool isFinished;
 	std::vector<cv::Point2i> trace;
 
 public:
 	// Constructor & destructor
-	Particle(Field* _field);
+	Particle(Field* _field, Cluster* _cluster);
 	~Particle();
 
 	// getters 

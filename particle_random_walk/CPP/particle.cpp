@@ -4,9 +4,10 @@
 #include <iostream>
 #include <ctime>
 
-Particle::Particle(Field* _field)
+Particle::Particle(Field* _field, Cluster* _cluster)
 {
 	field = _field;
+	cluster = _cluster;
 	srand((unsigned int)time(0));
 	xPos = 1 + (rand() % (field->get_width() - 2));
 	yPos = 1;
@@ -25,7 +26,7 @@ cv::Point2i Particle::move()
 	float cur = field->get_potential(xPos, yPos);
 	for (int j = -1; j < 2; ++j)
 		for (int i = -1; i < 2; ++i)
-			if (((i == 0) && (j == 0)) || (field->get_available(xPos + i, yPos + j) != 0))
+			if (((i == 0) && (j == 0)) || (field->get_available(xPos + i, yPos + j) != CELL_EMPTY))
 				potentials[(j + 1) * 3 + (i + 1)] = 0;
 			else
 				potentials[(j + 1) * 3 + (i + 1)] = field->get_potential(xPos + i, yPos + j);
@@ -36,9 +37,6 @@ cv::Point2i Particle::move()
 	for (int i = 0; i < 9; ++i)
 		if (potentials[i] != 0)
 			potentials[i] = abs(potentials[i] - cur) / sum;
-	//for (int i = 0; i < 9; ++i)
-	//	std::cout << potentials[i] << ' ';
-	//std::cout << '\n';
 	int destination = num_from_distribution(potentials, 9);
 	xPos += (destination % 3) - 1;
 	yPos += (int)(destination / 3) - 1;

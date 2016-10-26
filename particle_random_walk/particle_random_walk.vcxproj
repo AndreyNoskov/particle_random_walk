@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CPP\cluster.cpp" />
     <ClCompile Include="CPP\field.cpp" />
     <ClCompile Include="CPP\graph_engine.cpp" />
     <ClCompile Include="CPP\main.cpp" />
