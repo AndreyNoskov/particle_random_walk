@@ -46,11 +46,14 @@ cv::Point2i Particle::move()
 	int near_cluster = 0;
 	for (int j = -1; j < 2; ++j)
 		for (int i = -1; i < 2; ++i)
-			if (field->get_available(xPos, yPos) == CELL_CLUSTER)
+			if (field->get_available(xPos+i, yPos+j) == CELL_CLUSTER)
 				near_cluster++;
-	if (near_cluster > cluster_elements)
+	if (near_cluster >= cluster_elements) 
+	{
 		cluster->add_element(xPos, yPos);
-	if (yPos == field->get_width() - 2)
+		isFinished = true;
+	}
+	if (yPos == field->get_height() - 2)
 		isFinished = true;
 	return point;
 }

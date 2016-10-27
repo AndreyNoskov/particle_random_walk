@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 
+
 Field::Field(int _width, int _height)
 {
 	width = _width;
@@ -13,7 +14,7 @@ Field::Field(int _width, int _height)
 	{
 		potentials[i] = new float[width];
 		availables[i] = new int[width];
-		potentials[i] = new float[width];
+		basic_potentials[i] = new float[width];
 		for (int j = 0; j < width; ++j)
 		{
 			potentials[i][j] = 0.5;
@@ -49,7 +50,7 @@ void Field::print_potentials()
 	for (int j = 0; j < height; ++j)
 	{
 		for (int i = 0; i < width; ++i)
-			std::cout << std::setw(4) <<std::setprecision(2) << potentials[i][j] << '\t';
+			std::cout << std::setw(4) <<std::setprecision(2) << potentials[j][i] << '\t';
 		std::cout << '\n';
 	}
 }
@@ -67,22 +68,30 @@ void Field::print_availables()
 void Field::create_point_source_field()
 {
 	int center[2] = { (int)(width / 2), height - 1 };
+	float max = 0;
 	for (int i = 0; i < width; ++i)
 		for (int j = 0; j < height; ++j)
 		{
 			float r_sqr = (i - center[0])*(i - center[0]) + (j - center[1])*(j - center[1]) + 1;
-			basic_potentials[j][i] = potentials[j][i] = 1 / (0.01 * r_sqr);
+			basic_potentials[j][i] = potentials[j][i] = 1 / (0.01 * sqrt(r_sqr));
+			if (max < basic_potentials[j][i])
+				max = basic_potentials[j][i];
 		}
+	for (int i = 0; i < width; ++i)
+		for (int j = 0; j < height; ++j)
+			basic_potentials[j][i] = potentials[j][i] = basic_potentials[j][i] / max;
 }
 
 void Field::update_field(Cluster* cluster)
 {
-	float max = potentials[0][0] = basic_potentials[0][0] + cluster->get_potential(0, 0);
+	float max = basic_potentials[0][0] + cluster->get_potential(0, 0);
 	for (int i = 0; i < width; ++i)
 		for (int j = 0; j < height; ++j)
 		{
 			potentials[j][i] = basic_potentials[j][i] + cluster->get_potential(i, j);
-			if (potentials[j][i] < max)
+			if (availables[j][i] != 1)
+				availables[j][i] = (cluster->get_element(i, j) != CLUSTER_EMPTY) ? 2 : 0;
+			if (potentials[j][i] > max)
 				max = potentials[j][i];
 		}
 	for (int i = 0; i < width; ++i)

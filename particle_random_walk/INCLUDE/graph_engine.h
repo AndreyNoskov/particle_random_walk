@@ -17,10 +17,11 @@ private:
 
 	cv::Scalar unavailable_color;
 	cv::Scalar trace_color;
+	cv::Scalar cluster_color;
+
 public:
 	GraphEngine(int winWidth, int winHeight);
 	~GraphEngine();
 
 	void process(Field* field, Particle* particle);
-	void process_stage(Field* field, Cluster* cluster);
 };

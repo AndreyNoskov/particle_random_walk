@@ -4,19 +4,33 @@
 #include <graph_engine.h>
 #include <cluster.h>
 
-const int HEIGHT = 55;
-const int WIDTH = 55;
+// field settings
+const int HEIGHT = 31;
+const int WIDTH = 101;
+
+// particle settings
+const int INVOLVEMENT = 1;
+const int NUMBER_OF_PARTICLES = 1000;
+
+// cluster settings
+const float SIGMA = 0.1;
+const float BETA = 0.0001;
+const float CLUSTER_RADIUS = 2.0;
+
+// graph engine settings
+const int WINDOW_WIDTH = WIDTH * 15;
+const int WINDOW_HEIGHT = HEIGHT * 15;
 
 int main()
 {
 	Field field(WIDTH, HEIGHT);
-	GraphEngine g_engine(500, 500);
-	Cluster cluster(&field, 1, 1, 3);
+	GraphEngine g_engine(WINDOW_WIDTH, WINDOW_HEIGHT);
+	Cluster cluster(&field, SIGMA, BETA, CLUSTER_RADIUS);
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < NUMBER_OF_PARTICLES; i++)
 	{
 		cv::Point2i point(0, 0);
-		Particle particle(&field, &cluster, 2);
+		Particle particle(&field, &cluster, INVOLVEMENT);
 		while (!particle.is_finished())
 		{
 			point = particle.move();
@@ -24,7 +38,8 @@ int main()
 		}
 		cluster.add_element(point.x, point.y);
 		field.update_field(&cluster);
-		g_engine.process_stage(&field, &cluster);
+		if (cluster.is_on_top())
+			break;
 	}
 	system("Pause");
 	return 0;

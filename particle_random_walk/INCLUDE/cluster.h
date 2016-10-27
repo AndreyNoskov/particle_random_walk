@@ -22,10 +22,14 @@ public:
 	~Cluster();
 
 	inline float get_potential(int x, int y) { return cluster_field[y][x]; }
+	inline float get_element(int x, int y) { return cluster_elements[y][x]; }
 	inline int get_width() { return width; }
 	inline int get_height() { return height; }
 	inline float get_sigma() { return sigma; }
 	inline float get_beta() { return beta; }
 
 	void add_element(int x, int y);
+	void print_field();
+	void print_elements();
+	bool is_on_top();
 };
