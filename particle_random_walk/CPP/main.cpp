@@ -11,6 +11,7 @@ const int WIDTH = 401;
 // particle settings
 const int INVOLVEMENT = 1;
 const int NUMBER_OF_PARTICLES = 10000;
+const bool SAVE_TRACE = false;
 
 // cluster settings
 const float SIGMA = 1;
@@ -32,7 +33,7 @@ int main()
 	for (int i = 0; i < NUMBER_OF_PARTICLES; i++)
 	{
 		cv::Point2i point(0, 0);
-		Particle particle(&field, &cluster, INVOLVEMENT);
+		Particle particle(&field, &cluster, INVOLVEMENT, SAVE_TRACE);
 		while (!particle.is_finished())
 		{
 			point = particle.move();

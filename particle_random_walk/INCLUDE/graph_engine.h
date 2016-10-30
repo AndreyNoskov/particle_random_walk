@@ -6,22 +6,24 @@
 #include <string>
 #include <cluster.h>
 
+
+// класс для отрисовки
 class GraphEngine
 {
 private:
-	int width;
-	int height;
+	int width; // ширина окна в пикселях
+	int height; // высота окна в пикселях
 
-	cv::Mat image;
-	std::string winName;
+	cv::Mat image; // изображение, которое будет отрисовано
+	std::string winName; // имя окна
 
-	cv::Scalar unavailable_color;
-	cv::Scalar trace_color;
-	cv::Scalar cluster_color;
+	cv::Scalar unavailable_color; // цвет недоступных ячеек - граница поля
+	cv::Scalar trace_color; // цвет траектории движения частицы
+	cv::Scalar cluster_color; // цвет кластера
 
 public:
 	GraphEngine(int winWidth, int winHeight);
 	~GraphEngine();
 
-	void process(Field* field, Particle* particle);
+	void process(Field* field, Particle* particle); // отрисовать текущее состояние поля
 };

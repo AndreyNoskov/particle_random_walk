@@ -6,27 +6,37 @@
 #include <field.h>
 #include <cluster.h>
 
-enum Cells { CELL_EMPTY, CELL_BORDER, CELL_CLUSTER };
+// список возможных состояний клетки поля
+enum Cells { CELL_EMPTY,	// клетка пуста
+			 CELL_BORDER,	// клетка принадлежит границе поля
+			 CELL_CLUSTER	// клетка заполнена кластером
+};
 
-class Particle
+//класс описывающий частицу перемещающуюся по полю
+class Particle 
 {
 private:
+	// внутренний класс - введен для удобства
 	struct Pair {
 		Pair(float _value, int _index) : value(_value), index(_index) {}
 		int index;
 		float value;
 	};
-	int xPos;
-	int yPos;
-	Field* field;
-	Cluster* cluster;
-	bool isFinished;
-	std::vector<cv::Point2i> trace;
-	int cluster_elements;
+	int xPos;	// позиция частицы по оси Х
+	int yPos;	// позиция частицы по оси Y
+	Field* field;	// поле для хранения указателя на объеки поля
+	Cluster* cluster;	// поля для хранения указателя на объект кластера
+	bool isFinished;	// поле-индикатор, завершила ли частица движение
+	int cluster_elements;	// количество соседних элементов кластера, необходимых для присоединения
+	bool save_trace; // хранить ли траекторию частицы
+	std::vector<cv::Point2i> trace;	//поле-вектор, хранящий траекторию частицы
 
 public:
 	// Constructor & destructor
-	Particle(Field* _field, Cluster* _cluster, int cluster_elements);
+	Particle(Field* _field, 
+			 Cluster* _cluster,
+			 int cluster_elements,
+			 bool save_trace);
 	~Particle();
 
 	// getters 
@@ -34,6 +44,7 @@ public:
 	inline int get_y_pos() { return yPos; }
 	inline bool is_finished() { return isFinished; }
 	inline std::vector<cv::Point2i>* get_trace() { return &trace; }
+
 	// actions
 	cv::Point2i move();
 
