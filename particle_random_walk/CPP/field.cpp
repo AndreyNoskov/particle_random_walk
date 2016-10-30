@@ -72,8 +72,8 @@ void Field::create_point_source_field()
 	for (int i = 0; i < width; ++i)
 		for (int j = 0; j < height; ++j)
 		{
-			float r_sqr = (i - center[0])*(i - center[0]) + (j - center[1])*(j - center[1]) + 1;
-			basic_potentials[j][i] = potentials[j][i] = 1 / (0.01 * sqrt(r_sqr));
+			float r_sqr = (float)(i - center[0])*(i - center[0]) + (j - center[1])*(j - center[1]) + 1;
+			basic_potentials[j][i] = potentials[j][i] = 1.0 / (0.01 * sqrt(r_sqr));
 			if (max < basic_potentials[j][i])
 				max = basic_potentials[j][i];
 		}

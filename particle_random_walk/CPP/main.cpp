@@ -5,24 +5,26 @@
 #include <cluster.h>
 
 // field settings
-const int HEIGHT = 31;
-const int WIDTH = 101;
+const int HEIGHT = 201;
+const int WIDTH = 401;
 
 // particle settings
 const int INVOLVEMENT = 1;
-const int NUMBER_OF_PARTICLES = 1000;
+const int NUMBER_OF_PARTICLES = 10000;
 
 // cluster settings
-const float SIGMA = 0.1;
-const float BETA = 0.0001;
-const float CLUSTER_RADIUS = 2.0;
+const float SIGMA = 1;
+const float BETA = 0.01;
+const float CLUSTER_RADIUS = 4.0;
 
 // graph engine settings
-const int WINDOW_WIDTH = WIDTH * 15;
-const int WINDOW_HEIGHT = HEIGHT * 15;
+const int WINDOW_WIDTH = WIDTH * 3;
+const int WINDOW_HEIGHT = HEIGHT * 3;
 
 int main()
 {
+	srand((unsigned int)time(0));
+
 	Field field(WIDTH, HEIGHT);
 	GraphEngine g_engine(WINDOW_WIDTH, WINDOW_HEIGHT);
 	Cluster cluster(&field, SIGMA, BETA, CLUSTER_RADIUS);
@@ -34,8 +36,9 @@ int main()
 		while (!particle.is_finished())
 		{
 			point = particle.move();
-			g_engine.process(&field, &particle);
+			//g_engine.process(&field, &particle);
 		}
+		g_engine.process(&field, &particle);
 		cluster.add_element(point.x, point.y);
 		field.update_field(&cluster);
 		if (cluster.is_on_top())

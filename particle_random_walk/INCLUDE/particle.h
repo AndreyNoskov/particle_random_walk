@@ -11,6 +11,11 @@ enum Cells { CELL_EMPTY, CELL_BORDER, CELL_CLUSTER };
 class Particle
 {
 private:
+	struct Pair {
+		Pair(float _value, int _index) : value(_value), index(_index) {}
+		int index;
+		float value;
+	};
 	int xPos;
 	int yPos;
 	Field* field;

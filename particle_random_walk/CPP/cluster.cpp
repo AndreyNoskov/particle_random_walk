@@ -73,7 +73,7 @@ void Cluster::add_element(int x, int y)
 								&& (i + q < width - 1) && (i + q > 1);
 							if (condition)
 							{
-								float dist = sqrt(p*p + q*q);
+								float dist = (float) sqrt(p*p + q*q);
 								float value = sigma / dist * exp(beta * dist);
 								cluster_field[j + p][i + q] = value;
 							}
