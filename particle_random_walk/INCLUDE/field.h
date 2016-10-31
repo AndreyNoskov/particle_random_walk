@@ -3,21 +3,22 @@
 #include <cluster.h>
 class Cluster;
 
+// класс содержащий информацию о поле
 class Field
 {
 private:
-	int width;
-	int height;
+	int width; // ширина поля в клетках
+	int height; // высота поля в клетках
 
-	float** basic_potentials;
+	float** basic_potentials; // матрица потенциалов поля, созданных изначально
 
-	float** potentials;
-	int** availables;
+	float** potentials; // текущее значение потенциалов поля
+	int** availables; // матрица доступности ячейки поля
 
 	Field(); // hide default constructor
 
 	// create potential field with point source
-	void create_point_source_field();
+	void create_point_source_field(); // функция создания поля
 public:
 	// constructor & destructor
 	Field(int _width, int _height);
