@@ -25,8 +25,8 @@ GraphEngine::~GraphEngine()
 void GraphEngine::process(Field* field, Particle* particle)
 {
 	// отрисовка пол€
-	int b_width = (int)(width / field->get_width());
-	int b_height = (int)(height / field->get_height());
+	int b_width = static_cast<int>(width / field->get_width());
+	int b_height = static_cast<int>(height / field->get_height());
 	for (int i = 0; i < field->get_width(); ++i)
 		for (int j = 0; j < field->get_height(); ++j)
 		{
@@ -45,7 +45,7 @@ void GraphEngine::process(Field* field, Particle* particle)
 			// рисуем пустую €чейку
 			else
 			{
-				int r = field->get_potential(i, j) * 255;
+				int r = static_cast<int>(field->get_potential(i, j) * 255.0);
 				int b = 255 - r;
 				cv::rectangle(image,
 					cv::Point(i * b_width, j * b_height),
@@ -63,12 +63,17 @@ void GraphEngine::process(Field* field, Particle* particle)
 			int j_cur = (*(particle->get_trace()))[k].y;
 			int i_prw = (*(particle->get_trace()))[k-1].x;
 			int j_prw = (*(particle->get_trace()))[k-1].y;
-			cv::line(image, cv::Point((i_cur + 0.5)*b_width, (j_cur + 0.5)*b_height),
-				cv::Point((i_prw + 0.5)*b_width, (j_prw + 0.5)*b_height),
+			cv::line(image, 
+				cv::Point(static_cast<int>((i_cur + 0.5)*b_width),
+					static_cast<int>((j_cur + 0.5)*b_height)),
+				cv::Point(static_cast<int>((i_prw + 0.5)*b_width),
+					static_cast<int>((j_prw + 0.5)*b_height)),
 				trace_color, 3);
 		}
 		cv::Point2i cur_center = (*(particle->get_trace()))[particle->get_trace()->size() - 1];
-		cv::ellipse(image, cv::Point((cur_center.x + 0.5) * b_width, (cur_center.y + 0.5) * b_height),
+		cv::ellipse(image, 
+			cv::Point(static_cast<int>((cur_center.x + 0.5) * b_width),
+				static_cast<int>((cur_center.y + 0.5) * b_height)),
 			cv::Size(b_width * 0.2, b_height * 0.2), 0, 0, 360, cv::Scalar(0, 255, 0), -1);
 	}
 	cv::imshow(winName, image);

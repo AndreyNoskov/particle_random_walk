@@ -18,7 +18,8 @@ private:
 	Field(); // hide default constructor
 
 	// create potential field with point source
-	void create_point_source_field(); // функция создания поля
+	void create_point_source_field(); // функция создания поля с точечным источником
+	void hyperbolic_field(float b, int num); // функция создания гиперболического поля
 public:
 	// constructor & destructor
 	Field(int _width, int _height);
@@ -29,6 +30,7 @@ public:
 	inline int   get_available(int x, int y) { return availables[y][x]; }
 	inline int   get_width() { return width; }
 	inline int   get_height() { return height; }
+
 	void print_potentials();
 	void print_availables();
 

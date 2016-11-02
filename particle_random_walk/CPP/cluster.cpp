@@ -51,7 +51,7 @@ bool is_perimeter(Field* field, int x, int y)
 
 void Cluster::add_element(int x, int y)
 {
-	int rad = int(radius);
+	int rad = static_cast<int>(radius);
 	cluster_elements[y][x] = (is_perimeter(field, x, y)) ? CLUSTER_PERIMETER : CLUSTER_INTERN;
 	for (int j = -1; j < 2; ++j)
 		for (int i = -1; i < 2; ++i)
@@ -69,13 +69,13 @@ void Cluster::add_element(int x, int y)
 					for (int q = -rad; q <= rad; ++q)
 						if (p*p + q*q <= radius*radius)
 						{
-							bool condition = (j + p < height - 1) && (j + p > 1) 
+							bool condition = (j + p < height) && (j + p > 0) 
 								&& (i + q < width - 1) && (i + q > 1);
 							if (condition)
 							{
-								float dist = (float) sqrt(p*p + q*q);
+								float dist = static_cast<int>(sqrt(p*p + q*q));
 								float value = sigma / dist * exp(beta * dist);
-								cluster_field[j + p][i + q] = value;
+								cluster_field[j + p][i + q] += value;
 							}
 							//if (condition && (cluster_elements[j][i] != CLUSTER_EMPTY))
 							//	cluster_field[j + p][i + q] = 0;

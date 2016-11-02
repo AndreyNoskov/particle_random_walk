@@ -5,8 +5,8 @@
 #include <cluster.h>
 
 // field settings
-const int HEIGHT = 201;
-const int WIDTH = 401;
+const int HEIGHT = 11;
+const int WIDTH = 11;
 
 // particle settings
 const int INVOLVEMENT = 1;
@@ -16,7 +16,7 @@ const bool SAVE_TRACE = false;
 // cluster settings
 const float SIGMA = 1;
 const float BETA = 0.01;
-const float CLUSTER_RADIUS = 4.0;
+const float CLUSTER_RADIUS = 20.0;
 
 // graph engine settings
 const int WINDOW_WIDTH = WIDTH * 3;
