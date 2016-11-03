@@ -11,7 +11,7 @@ Field::Field(int _width, int _height)
 	availables = new int* [height];
 	basic_potentials = new float* [height];
 
-	// hyperbolic_field(1, 0);
+	hyperbolic_field(1, 0);
 
 	for (int i = 0; i < height; ++i)
 	{
@@ -85,6 +85,14 @@ void Field::create_point_source_field()
 			basic_potentials[j][i] = potentials[j][i] = basic_potentials[j][i] / max;
 }
 
+bool is_more(int x, int y, float l, float beta)
+{
+	float _x = static_cast<float>(x);
+	float _y = static_cast<float>(y);
+	float value = (_x*_x) / (l*l) - (_y*_y / (/*beta*beta - */l*l));
+	return (value > 1) ? true : false;
+}
+
 float** create_hyperbolic_field(float fi, float b, int width, int height)
 {
 	float** field = new float*[height];
@@ -95,28 +103,24 @@ float** create_hyperbolic_field(float fi, float b, int width, int height)
 			field[j][i] = 0;
 	}
 
-	float y_min = 0;
-	float y_max = 0;
-	for (int lambda = height - 1; lambda >= 0; --lambda)
-		for (int i = 0; i < width; ++i)
+	for (int y = 0; y < height; ++y)
+	{
+		float lambda = static_cast<float>(height);
+		for (int x = 0; x < width; ++x)
 		{
-			if (b*b > lambda * lambda)
-			{
-				y_min = lambda * sqrt(i*i / (b*b - lambda * lambda) - 1);
-				int tmp = lambda - 1;
-				float y_max = tmp * sqrt(i*i / (b*b - tmp* tmp) - 1);
-			}
-			float value = fi * log((b + lambda) / (b - lambda)) / log((b + height) / (b - height));
-			for (int j = static_cast<int>(y_min); j < static_cast<int>(y_max); ++j)
-				if (j < height)
-					field[j][i] = value;
+			if (is_more(x, y, lambda, b))
+				lambda--;
+			float value1 = log((b + lambda) / (b - lambda));
+			float value2 = log((b + static_cast<float>(height)) / (b - static_cast<float>(height)));
+			field[y][x] = value1 / value2;
 		}
+	}
 	return field;
 }
 
 void Field::hyperbolic_field(float b, int num)
 {
-	float** hyp_field = create_hyperbolic_field(1, b, width, height);
+	float** hyp_field = create_hyperbolic_field(1, 1, width, height);
 
 	for (int j = 0; j < height; ++j)
 	{

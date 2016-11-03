@@ -70,15 +70,13 @@ void Cluster::add_element(int x, int y)
 						if (p*p + q*q <= radius*radius)
 						{
 							bool condition = (j + p < height) && (j + p > 0) 
-								&& (i + q < width - 1) && (i + q > 1);
+								&& (i + q < width) && (i + q > 0);
 							if (condition)
 							{
 								float dist = static_cast<int>(sqrt(p*p + q*q));
 								float value = sigma / dist * exp(beta * dist);
 								cluster_field[j + p][i + q] += value;
 							}
-							//if (condition && (cluster_elements[j][i] != CLUSTER_EMPTY))
-							//	cluster_field[j + p][i + q] = 0;
 						}
 				cluster_field[j][i] = 0;
 			}
