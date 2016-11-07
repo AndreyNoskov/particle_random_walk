@@ -26,7 +26,7 @@ Field::Field(int _width, int _height)
 		availables[i][0] = availables[i][width - 1] = 1;
 	}
 	// create_point_source_field();
-	hyperbolic_field(static_cast<float>(height), 0);
+	hyperbolic_field(static_cast<float>(height), 1);
 	for (int i = 0; i < width; ++i)
 	{
 		availables[0][i] = 1;
@@ -89,48 +89,45 @@ bool is_more(int x, int y, float l, float beta)
 	float _x = static_cast<float>(x);
 	float _y = static_cast<float>(y);
 	float value = (_x*_x) / (l*l) - (_y*_y / (beta*beta - l*l));
-	return (value > 1) ? true : false;
+	return (value > 1) ? false : true;
 }
 
 float** create_hyperbolic_field(float fi, float b, int width, int height)
 {
 	volatile float _b = b;
-	float** field = new float*[height];
-	for (int j = 0; j < height; ++j)
+	float** field = new float*[width];
+	for (int j = 0; j < width; ++j)
 	{
-		field[j] = new float[width];
-		for (int i = 0; i < width; ++i)
+		field[j] = new float[height];
+		for (int i = 0; i < height; ++i)
 			field[j][i] = 0;
 	}
 
-	for (int y = 0; y < height; ++y)
-	{
-		float lambda = static_cast<float>(height - 1);
-		for (int x = 0; x < width; ++x)
-		{
-			if (is_more(x, y, lambda, b) ^ is_more(x, y, lambda - 1, b))
-				lambda--;
-			field[y][x] = log((b + lambda) / (b - lambda));
-		}
-	}
+	for (float lambda = static_cast<float>(width-1); lambda >= 0; --lambda)
+		for (int y = 0; y < width; ++y)
+			for (int x = 0; x < height; ++x)
+				if (is_more(x, y, lambda, b))
+					field[y][x] = fi * log((b + lambda) / (b - lambda));
+
 	return field;
 }
 
 void Field::hyperbolic_field(float b, int num)
 {
 	float** hyp_field = create_hyperbolic_field(1, b, width, height);
-	/*
-	for (int j = 0; j < height; ++j)
-	{
-		for (int i = 0; i < width; ++i)
-			std::cout << std::setw(4) << std::setprecision(2) << hyp_field[j][i] << '\t';
-		std::cout << '\n';
-	}
-	*/
-
-	for (int j = 0; j < height; ++j)
-		for (int i = 0; i < width; ++i)
-			potentials[j][i] = basic_potentials[j][i] = hyp_field[j][i];
+	int shift = static_cast<int>(static_cast<float>(width) / static_cast<float>(num + 2));
+	for (int n = 1; n < num + 2; ++n)
+		for (int j = 0; j < height; ++j)
+			for (int i = 0; i < width; ++i)
+			{
+				float value = 0;
+				if (i < n * shift)
+					value = hyp_field[n* shift - i][j];
+				else
+					value = hyp_field[i - n* shift][j];
+				potentials[j][i] = basic_potentials[j][i] += value;
+			}
+				
 
 	for (int j = 0; j < height; ++j)
 		delete[] hyp_field[j];

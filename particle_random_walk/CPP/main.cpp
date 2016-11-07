@@ -35,6 +35,7 @@ int main()
 		cv::Point2i point(0, 0);
 		Particle particle(&field, &cluster, INVOLVEMENT, SAVE_TRACE);
 		g_engine.process(&field, &particle);
+		// cv::waitKey(20);
 		while (!particle.is_finished())
 			point = particle.move();
 		g_engine.process(&field, &particle);
