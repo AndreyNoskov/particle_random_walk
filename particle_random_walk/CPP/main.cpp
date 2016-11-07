@@ -5,8 +5,8 @@
 #include <cluster.h>
 
 // field settings
-const int HEIGHT = 7;
-const int WIDTH = 7;
+const int HEIGHT = 201;
+const int WIDTH = 401;
 
 // particle settings
 const int INVOLVEMENT = 1;
@@ -34,6 +34,7 @@ int main()
 	{
 		cv::Point2i point(0, 0);
 		Particle particle(&field, &cluster, INVOLVEMENT, SAVE_TRACE);
+		g_engine.process(&field, &particle);
 		while (!particle.is_finished())
 			point = particle.move();
 		g_engine.process(&field, &particle);
