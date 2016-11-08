@@ -3,7 +3,7 @@
 #include <iomanip>
 
 
-Field::Field(int _width, int _height)
+Field::Field(int _width, int _height, int num, float fi)
 {
 	width = _width;
 	height = _height;
@@ -26,7 +26,7 @@ Field::Field(int _width, int _height)
 		availables[i][0] = availables[i][width - 1] = 1;
 	}
 	// create_point_source_field();
-	hyperbolic_field(static_cast<float>(height), 1);
+	hyperbolic_field(static_cast<float>(height), num, fi);
 	for (int i = 0; i < width; ++i)
 	{
 		availables[0][i] = 1;
@@ -84,7 +84,7 @@ void Field::create_point_source_field()
 			basic_potentials[j][i] = potentials[j][i] = basic_potentials[j][i] / max;
 }
 
-bool is_more(int x, int y, float l, float beta)
+bool is_not_more(int x, int y, float l, float beta)
 {
 	float _x = static_cast<float>(x);
 	float _y = static_cast<float>(y);
@@ -106,17 +106,17 @@ float** create_hyperbolic_field(float fi, float b, int width, int height)
 	for (float lambda = static_cast<float>(width-1); lambda >= 0; --lambda)
 		for (int y = 0; y < width; ++y)
 			for (int x = 0; x < height; ++x)
-				if (is_more(x, y, lambda, b))
+				if (is_not_more(x, y, lambda, b))
 					field[y][x] = fi * log((b + lambda) / (b - lambda));
 
 	return field;
 }
 
-void Field::hyperbolic_field(float b, int num)
+void Field::hyperbolic_field(float b, int num, float fi)
 {
-	float** hyp_field = create_hyperbolic_field(1, b, width, height);
-	int shift = static_cast<int>(static_cast<float>(width) / static_cast<float>(num + 2));
-	for (int n = 1; n < num + 2; ++n)
+	float** hyp_field = create_hyperbolic_field(fi, b, width, height);
+	int shift = static_cast<int>(static_cast<float>(width) / static_cast<float>(num + 1));
+	for (int n = 1; n <= num; ++n)
 		for (int j = 0; j < height; ++j)
 			for (int i = 0; i < width; ++i)
 			{
@@ -127,8 +127,6 @@ void Field::hyperbolic_field(float b, int num)
 					value = hyp_field[i - n* shift][j];
 				potentials[j][i] = basic_potentials[j][i] += value;
 			}
-				
-
 	for (int j = 0; j < height; ++j)
 		delete[] hyp_field[j];
 	delete[] hyp_field;

@@ -104,12 +104,8 @@ void Cluster::print_elements()
 
 bool Cluster::is_on_top()
 {
-	bool flag = false;
 	for (int i = 1; i < width; ++i)
 		if (cluster_elements[1][i] == CLUSTER_PERIMETER)
-		{
-			flag = true;
-			break;
-		}
-	return flag;
+			return true;
+	return false;
 }

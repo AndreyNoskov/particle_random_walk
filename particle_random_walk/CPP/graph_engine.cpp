@@ -1,9 +1,9 @@
 #include <graph_engine.h>
 
-GraphEngine::GraphEngine(int winWidth, int winHeight)
+GraphEngine::GraphEngine(std::string _win_name, int winWidth, int winHeight)
 {
 	// зададим начальные значения
-	winName = "Test window";
+	winName = _win_name;
 	width = winWidth;
 	height = winHeight;
 	image.create(height, width, CV_8UC3);
@@ -12,9 +12,9 @@ GraphEngine::GraphEngine(int winWidth, int winHeight)
 	cv::namedWindow(winName, CV_WINDOW_AUTOSIZE);
 
 	// задаем цвета
-	unavailable_color = cv::Scalar(255, 255, 0);
+	unavailable_color = cv::Scalar(0, 0, 0);
 	trace_color = cv::Scalar(0, 255, 0);
-	cluster_color = cv::Scalar(0, 0, 0);
+	cluster_color = cv::Scalar(0, 255, 255);
 }
 
 GraphEngine::~GraphEngine()
@@ -37,11 +37,9 @@ void GraphEngine::process(Field* field, Particle* particle)
 					cv::Point((i + 1) * b_width, (j + 1) * b_height), unavailable_color, -1);
 			// рисуем кластер
 			else if (field->get_available(i, j) == CELL_CLUSTER)
-			{
 				cv::rectangle(image,
 					cv::Point(i * b_width, j * b_height),
 					cv::Point((i + 1) * b_width, (j + 1) * b_height), cluster_color, -1);
-			}
 			// рисуем пустую ячейку
 			else
 			{
@@ -51,7 +49,6 @@ void GraphEngine::process(Field* field, Particle* particle)
 					cv::Point(i * b_width, j * b_height),
 					cv::Point((i+1) * b_width, (j+1) * b_height), cv::Scalar(b, 0, r), -1);
 			}
-				
 		}
 
 	// рисуем траекторию движения частицы
@@ -74,7 +71,8 @@ void GraphEngine::process(Field* field, Particle* particle)
 		cv::ellipse(image, 
 			cv::Point(static_cast<int>((cur_center.x + 0.5) * b_width),
 				static_cast<int>((cur_center.y + 0.5) * b_height)),
-			cv::Size(b_width * 0.2, b_height * 0.2), 0, 0, 360, cv::Scalar(0, 255, 0), -1);
+			cv::Size(static_cast<int>(b_width * 0.2), static_cast<int>(b_height * 0.2)),
+				0, 0, 360, cv::Scalar(0, 255, 0), -1);
 	}
 	cv::imshow(winName, image);
 	cv::waitKey(1);
