@@ -74,6 +74,7 @@ void GraphEngine::process(Field* field, Particle* particle)
 			cv::Size(static_cast<int>(b_width * 0.2), static_cast<int>(b_height * 0.2)),
 				0, 0, 360, cv::Scalar(0, 255, 0), -1);
 	}
+	cv::flip(image, image, -1);
 	cv::imshow(winName, image);
 	cv::waitKey(1);
 }
