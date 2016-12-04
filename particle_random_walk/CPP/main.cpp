@@ -6,8 +6,8 @@
 
 //================SETTINGS=================
 // field settings
-const int HEIGHT = 51;				// высота поля
-const int WIDTH = 51;				// ширина поля
+const int HEIGHT = 151;				// высота поля
+const int WIDTH = 151;				// ширина поля
 const int NUM_OF_FUSES = 3;			// число затравок
 const float FUSE_POTENTIAL = 100;	// потенциал одной затравки
 
@@ -35,16 +35,16 @@ int main() // начало выполнения программы
 	Field field(WIDTH, HEIGHT, NUM_OF_FUSES, FUSE_POTENTIAL); // создаем поле
 	GraphEngine g_engine(WIN_NAME, WINDOW_WIDTH, WINDOW_HEIGHT); // создаем графический движок
 	Cluster cluster(&field, SIGMA, BETA, CLUSTER_RADIUS); // создаем кластер
-
+	
 	for (int i = 0; i < NUMBER_OF_PARTICLES; ++i) // запускаем частицы по одной
 	{
 		cv::Point2i point(0, 0);
 		Particle particle(&field, &cluster, INVOLVEMENT, SAVE_TRACE); // создаем частицу
 		while (!particle.is_finished()) 
 			point = particle.move(); // двигаемся пока не встретим дно или кластер
-		g_engine.process(&field, &particle); // рисуем что получилось, когда частица остановилась
 		cluster.add_element(point.x, point.y); // добавляем элемент кластера в точке остановки
 		field.update_field(&cluster); // пересчитываем поле
+		g_engine.process(&field, &particle); // рисуем что получилось, когда частица остановилась
 		if (cluster.is_on_top()) // проверяем не добрался ли кластер до верха
 			break; // если добрался, завершаем моделирование
 	}

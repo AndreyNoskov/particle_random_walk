@@ -4,7 +4,8 @@
 #include <iostream>
 #include <ctime>
 
-Particle::Particle(Field* _field, Cluster* _cluster, int _cluster_elements = 1, bool _save_trace = true)
+Particle::Particle(Field* _field, Cluster* _cluster,
+				   int _cluster_elements = 1, bool _save_trace = true)
 {
 	// присваиваем исходные значения
 	cluster_elements = _cluster_elements;

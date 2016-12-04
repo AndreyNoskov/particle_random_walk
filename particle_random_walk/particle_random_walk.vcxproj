@@ -25,6 +25,7 @@
     <ClCompile Include="CPP\main.cpp" />
     <ClCompile Include="CPP\misc.cpp" />
     <ClCompile Include="CPP\particle.cpp" />
+    <ClCompile Include="CPP\source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INCLUDE\cluster.h" />
@@ -32,6 +33,7 @@
     <ClInclude Include="INCLUDE\graph_engine.h" />
     <ClInclude Include="INCLUDE\misc.h" />
     <ClInclude Include="INCLUDE\particle.h" />
+    <ClInclude Include="INCLUDE\source.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E3F6ECC7-8583-4071-8129-EF98B9CE47E5}</ProjectGuid>
