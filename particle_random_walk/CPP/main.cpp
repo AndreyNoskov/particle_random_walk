@@ -48,6 +48,7 @@ int main() // начало выполнения программы
 		g_engine.process(&field, &particle); // рисуем что получилось, когда частица остановилась
 		cluster.add_element(point.x, point.y); // добавляем элемент кластера в точке остановки
 		field.update_field(&cluster); // пересчитываем поле
+		g_engine.process(&field, &particle); // рисуем что получилось, когда частица остановилась
 		if (cluster.is_on_top()) // проверяем не добрался ли кластер до верха
 			break; // если добрался, завершаем моделирование
 	}

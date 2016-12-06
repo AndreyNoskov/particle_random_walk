@@ -5,6 +5,7 @@
 #include <field.h>
 #include <string>
 #include <cluster.h>
+#include <source.h>
 
 
 // класс для отрисовки
@@ -25,5 +26,5 @@ public:
 	GraphEngine(std::string _win_name, int winWidth, int winHeight);
 	~GraphEngine();
 
-	void process(Field* field, Particle* particle); // отрисовать текущее состояние поля
+	void process(Field* field, Particle* particle, Source* source = nullptr); // отрисовать текущее состояние поля
 };

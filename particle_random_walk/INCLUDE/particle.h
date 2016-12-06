@@ -5,6 +5,7 @@
 
 #include <field.h>
 #include <cluster.h>
+#include <source.h>
 
 // список возможных состояний клетки поля
 enum Cells 
@@ -31,14 +32,16 @@ private:
 	bool isFinished;				// поле-индикатор, завершила ли частица движение
 	int cluster_elements;			// количество соседних элементов кластера, необходимых для присоединения
 	bool save_trace;				// хранить ли траекторию частицы
-	std::vector<cv::Point2i> trace;	//поле-вектор, хранящий траекторию частицы
+	std::vector<cv::Point2i> trace;	// поле-вектор, хранящий траекторию частицы
+	Source* source;					// поле для хранения указателя на источник
 
 public:
 	// Constructor & destructor
 	Particle(Field* _field, 
 			 Cluster* _cluster,
-			 int cluster_elements,
-			 bool save_trace);
+			 Source* source = nullptr,
+			 int cluster_elements = 1,
+			 bool save_trace = true);
 	~Particle();
 
 	// getters 

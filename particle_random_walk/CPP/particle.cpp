@@ -4,18 +4,31 @@
 #include <iostream>
 #include <ctime>
 
-Particle::Particle(Field* _field, Cluster* _cluster, int _cluster_elements = 1, bool _save_trace = true)
+Particle::Particle(Field* _field, Cluster* _cluster, Source* _source,
+				   int _cluster_elements, bool _save_trace)
 {
 	// присваиваем исходные значения
 	cluster_elements = _cluster_elements;
 	save_trace = _save_trace;
 	field = _field;
 	cluster = _cluster;
+	source = _source;
 
-	// частица генерируется на верхней границе поля
-	xPos = 1 + (rand() % (field->get_width() - 2));
-	yPos = 1;
-
+	// определяем способ появления новой частицы
+	if (source != nullptr)
+	{
+		// частица берется из иссякающего источника
+		cv::Point2i point = source->get_next_point();
+		xPos = point.x;
+		yPos = point.y;
+	}
+	else
+	{
+		// частица генерируется на верхней границе поля
+		xPos = 1 + (rand() % (field->get_width() - 2));
+		yPos = 1;
+	}
+	
 	// записываем первую координату
 	if (save_trace)
 		trace.push_back(cv::Point2i(xPos, yPos));
@@ -99,5 +112,10 @@ cv::Point2i Particle::move()
 	// если частица достигла нижней границы - добавим в кластер 
 	if (yPos == field->get_height() - 2)
 		isFinished = true;
+
+	// если есть источник, найдем позицию для следующей частицы
+	if (source != nullptr)
+		source->add_finished_point(cv::Point2i(xPos, yPos));
+
 	return point;
 }

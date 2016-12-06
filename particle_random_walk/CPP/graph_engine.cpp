@@ -22,7 +22,7 @@ GraphEngine::~GraphEngine()
 	cv::destroyWindow(winName);
 }
 
-void GraphEngine::process(Field* field, Particle* particle)
+void GraphEngine::process(Field* field, Particle* particle, Source* source)
 {
 	// отрисовка поля
 	int b_width = static_cast<int>(width / field->get_width());
@@ -50,6 +50,28 @@ void GraphEngine::process(Field* field, Particle* particle)
 					cv::Point((i+1) * b_width, (j+1) * b_height), cv::Scalar(b, 0, r), -1);
 			}
 		}
+	// рисуем источник
+	if (source != nullptr)
+	{
+		for (int i = 1; i < field->get_width() - 1; ++i)
+			for (int j = 1; j < source->get_height(); ++j)
+			{
+				if (source->get_value(j - 1, i - 1) == SOURCE_FULL)
+				{
+					cv::rectangle(image,
+						cv::Point(i * b_width, j * b_height),
+						cv::Point((i + 1) * b_width, (j + 1) * b_height), cv::Scalar(150, 150, 150), -1);
+				}
+				else if (source->get_value(j - 1, i - 1) == SOURCE_PERIMETER)
+				{
+					cv::rectangle(image,
+						cv::Point(i * b_width, j * b_height),
+						cv::Point((i + 1) * b_width, (j + 1) * b_height), cv::Scalar(100, 100, 100), -1);
+				}
+				else
+					continue;
+			}
+	}
 
 	// рисуем траекторию движения частицы
 	if (particle->get_trace()->size() != 0)
