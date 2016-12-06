@@ -64,6 +64,7 @@ void Source::add_finished_point(cv::Point2i point)
 					source_array[source_point.y][source_point.x] = SOURCE_PERIMETER;
 				}
 			}
+			perimeter.erase(it);
 			break;
 		}
 }

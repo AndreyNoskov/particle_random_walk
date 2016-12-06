@@ -109,12 +109,12 @@ cv::Point2i Particle::move()
 		isFinished = true;
 	}
 
-	// если частица достигла нижней границы - добавим в кластер 
+	// если частица достигла нижней границы или источника (если есть) - добавим в кластер 
 	if (yPos == field->get_height() - 2)
 		isFinished = true;
 
 	// если есть источник, найдем позицию для следующей частицы
-	if (source != nullptr)
+	if ((source != nullptr) && (isFinished))
 		source->add_finished_point(cv::Point2i(xPos, yPos));
 
 	return point;

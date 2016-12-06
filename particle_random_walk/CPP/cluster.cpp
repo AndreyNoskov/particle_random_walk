@@ -102,10 +102,10 @@ void Cluster::print_elements()
 	}
 }
 
-bool Cluster::is_on_top()
+bool Cluster::is_on_top(int top)
 {
 	for (int i = 1; i < width; ++i)
-		if (cluster_elements[1][i] == CLUSTER_PERIMETER)
+		if (cluster_elements[top][i] == CLUSTER_PERIMETER)
 			return true;
 	return false;
 }

@@ -38,5 +38,5 @@ public:
 	void add_element(int x, int y); //добавить элемент в кластер
 	void print_field();
 	void print_elements();
-	bool is_on_top(); // проверить добрался ли кластер до верхней границы
+	bool is_on_top(int top); // проверить добрался ли кластер до верхней границы
 };
