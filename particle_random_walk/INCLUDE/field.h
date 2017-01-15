@@ -3,6 +3,13 @@
 #include <cluster.h>
 class Cluster;
 
+enum APPROX_FIELD {
+	AF_CONST,
+	AF_LINEAR,
+	AF_LOG,
+	AF_REVERSE
+};
+
 // класс содержащий информацию о поле
 class Field
 {
@@ -17,12 +24,19 @@ private:
 
 	Field();					// hide default constructor
 
+	APPROX_FIELD approx_type;
+
+	float approx_p;
+	float approx_q;
+	float get_beta_by_lambda(float lambda, APPROX_FIELD aprox_type);
+
 	void create_point_source_field();					// функция создания поля с точечным источником
-	void hyperbolic_field(float b, int num, float fi);	// функция создания гиперболического поля
+	void hyperbolic_field(int num, float fi);	// функция создания гиперболического поля
+	float** create_hyperbolic_field(float fi, int width, int height);
 
 public:
 	// constructor & destructor
-	Field(int _width, int _height, int num, float fi);
+	Field(int _width, int _height, int num, float fi, APPROX_FIELD approx_type);
 	~Field();
 
 	// getters

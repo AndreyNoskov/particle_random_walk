@@ -9,8 +9,9 @@
 // field settings
 const int HEIGHT = 101;				// высота поля
 const int WIDTH = 201;				// ширина поля
-const int NUM_OF_FUSES = 4;			// число затравок
+const int NUM_OF_FUSES = 3;			// число затравок
 const float FUSE_POTENTIAL = 100;	// потенциал одной затравки
+const APPROX_FIELD APPROX_TYPE = AF_LINEAR; // тип аппроксимации поля
 
 // particle settings
 const int INVOLVEMENT = 1;				// элементов кластера для присоединения
@@ -29,15 +30,15 @@ const std::string WIN_NAME = "Pore formation modeling"; // имя окна
 const bool DRAW_EVERY_MOVE = false;						// рисовать ли каждое движение частицы отдельно
 
 //source settings
-const bool USE_SOURCE = true; // использовать ли иссякающий источник
-const int SOURCE_HEIGHT = 30; // высота источника
+const bool USE_SOURCE = false;	// использовать ли иссякающий источник
+const int SOURCE_HEIGHT = 30;	// высота источника
 //============END OF SETTINGS==============
 
 
 int main()																		// начало выполнения программы
 {
 	srand((unsigned int)time(0));												// зерно генератора случайных чисел
-	Field field(WIDTH, HEIGHT, NUM_OF_FUSES, FUSE_POTENTIAL);					// создаем поле
+	Field field(WIDTH, HEIGHT, NUM_OF_FUSES, FUSE_POTENTIAL, APPROX_TYPE);		// создаем поле
 	GraphEngine g_engine(WIN_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);				// создаем графический движок
 	Cluster cluster(&field, SIGMA, BETA, CLUSTER_RADIUS);						// создаем кластер
 	Source source(&field, SOURCE_HEIGHT);										// создаем источник
@@ -45,7 +46,7 @@ int main()																		// начало выполнения программы
 	int num = (USE_SOURCE) ?
 		source.get_height() * source.get_width() :
 		NUMBER_OF_PARTICLES;													// сколько частиц моделировать
-	for (int i = 0; i < NUMBER_OF_PARTICLES; ++i)								// запускаем частицы по одной
+	for (int i = 0; i < num; ++i)												// запускаем частицы по одной
 	{
 		cv::Point2i point(0, 0);
 		Particle particle(&field, &cluster, p_source, INVOLVEMENT, SAVE_TRACE); // создаем частицу
