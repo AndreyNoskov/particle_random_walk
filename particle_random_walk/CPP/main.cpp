@@ -9,7 +9,7 @@
 // field settings
 const int HEIGHT = 101;				// высота поля
 const int WIDTH = 201;				// ширина поля
-const int NUM_OF_FUSES = 3;			// число затравок
+const int NUM_OF_FUSES = 2;			// число затравок
 const float FUSE_POTENTIAL = 100;	// потенциал одной затравки
 const APPROX_FIELD APPROX_TYPE = AF_LINEAR; // тип аппроксимации поля
 

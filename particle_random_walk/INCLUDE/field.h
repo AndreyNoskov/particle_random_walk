@@ -28,6 +28,10 @@ private:
 
 	float approx_p;
 	float approx_q;
+
+	float lambda_max;
+	float lambda_min;
+
 	float get_beta_by_lambda(float lambda, APPROX_FIELD aprox_type);
 
 	void create_point_source_field();					// функция создания поля с точечным источником

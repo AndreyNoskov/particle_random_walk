@@ -35,11 +35,11 @@ Field::Field(int _width, int _height, int num, float fi, APPROX_FIELD _approx_ty
 		approx_p = approx_q = 0;
 	else
 	{
-		float D = static_cast<float>(width) / static_cast<float>(num + 1);
-		float d_max = D; // ??
-		float d_min = 0;
-		float lambda_max = 1; // ??
-		float lambda_min = height - 1;
+		float D = static_cast<float>(width) / static_cast<float>(num + 1); // расстояние между затравками
+		float d_max = D; // расстояние от крайней затравки до края области
+		float d_min = 15; // параметр характеризующий размер иглы (влияет сильно, но не понятно как выбирать)
+		lambda_max = 1;				// 
+		lambda_min = height - 1;	// диапазон параметра лямбда
 		if (approx_type == AF_LINEAR)
 		{
 			approx_p = (d_min - D + 2.0 * D) / (lambda_max - lambda_min);
@@ -121,13 +121,10 @@ bool is_not_more(int x, int y, float l, float beta)
 	float _x = static_cast<float>(x);
 	float _y = static_cast<float>(y);
 	float value = (_x*_x) / (l*l) - (_y*_y / (beta*beta - l*l));
-	return (value > 1) ? false : true;
+	return (value >= 1) ? false : true;
 }
 
-float sqr(float a)
-{
-	return a * a;
-}
+float sqr(float a) { return a * a; }
 
 float Field::get_beta_by_lambda(float lambda, APPROX_FIELD aprox_type)
 {
@@ -148,6 +145,7 @@ float Field::get_beta_by_lambda(float lambda, APPROX_FIELD aprox_type)
 			break;
 		default:
 			tmp = static_cast<float>(height);
+			break;
 	}
 	return tmp;
 }
@@ -162,16 +160,15 @@ float** Field::create_hyperbolic_field(float fi, int width, int height)
 			field[j][i] = 0;
 	}
 
-	for (float lambda = static_cast<float>(height - 1); lambda >= 0; --lambda)
+	for (float lambda = lambda_min; lambda >= lambda_max; --lambda)
 	{
 		float b = get_beta_by_lambda(lambda, approx_type);
 		for (int y = 0; y < width; ++y)
 			for (int x = 0; x < height; ++x)
 				if (is_not_more(x, y, lambda, b))
-					field[y][x] = fi * log((b + lambda) / (b - lambda));
+					field[y][x] = (b == lambda) ? fi : fi * log((b + lambda) / (b - lambda));
 	}
-		
-
+	
 	return field;
 }
 
